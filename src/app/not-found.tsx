@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
-export default function NotFound() {
+import { Button } from "@/components/ui";
+
+export default function NotFoundPage() {
   return (
     <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-4 text-center">
       <h2 className="text-6xl font-extrabold text-blue-600">404</h2>

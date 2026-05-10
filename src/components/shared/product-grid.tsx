@@ -1,12 +1,12 @@
-import { Product } from "@/interfaces/Product";
-import ProductCard from "./ProductCard";
+import { Product } from "@/types/domain";
+
+import ProductCard from "./product-card";
 
 interface ProductGridProps {
   products: Product[];
 }
 
 export default function ProductGrid({ products }: ProductGridProps) {
-
   if (!products || products.length === 0) {
     return (
       <div className="flex min-h-[40vh] items-center justify-center rounded-lg border border-dashed text-center text-slate-500">

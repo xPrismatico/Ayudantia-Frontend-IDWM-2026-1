@@ -1,118 +1,81 @@
-# Cliente Web Frontend - Ayudantía Introducción al Desarrollo Web/Móvil
+# Tienda UCN — Frontend
 
+Cliente web del taller de Introducción al Desarrollo Web/Móvil (UCN). Construido con Next.js 15 y React 19.
 
-## 📦 Descripción del Proyecto
+## Stack
 
-
-Este proyecto corresponde al desarrollo del **Cliente Web Frontend** de la Ayudantía de la asignatura Introducción al Desarrollo Web/Móvil de la Universidad Católica del Norte implementada en **Next.js 15**.
-
-
-## 🧑‍💻 Desarrollador
-
-
-- Samuel Fuentes - samuel.fuentes@alumnos.ucn.cl
-
-
-## 🛠️ Tecnologías Utilizadas
-
-
-- **Next.js 15** (App Router)
-- **React**
-- **ESLint**
-- **Prettier**
-- **React Hook Form y Zod**
-- **TanStack Query**
-- **NextAuth.js**
-- **Jotai**
-- **Playwright**
-- **Tailwind CSS**
+- **Next.js 15** (App Router, Turbopack)
+- **React 19**
+- **TypeScript** (strict, ES2022)
+- **Tailwind CSS v4**
 - **Shadcn UI**
-- **TypeScript**
-- **Axios**
+- **Lucide React** (iconos)
+- **Sonner** (notificaciones)
+- **Zod** + **`@t3-oss/env-nextjs`** (validación de variables de entorno)
+- **ESLint** + **Prettier**
+- **Husky** + **commitlint** + **lint-staged**
 
+## Requisitos
 
-## 📡 API Backend del Proyecto
+- Node.js 20+ y npm.
+- Backend del taller en ejecución para consumir la API ([repositorio](https://github.com/carlos44440/Taller-Backend-IDWM-1erSem-2026)).
 
+## Quick start
 
-Este frontend requiere de una API backend funcional para operar correctamente.
+1. Clonar el repositorio.
 
+   ```bash
+   git clone https://github.com/xPrismatico/Ayudantia-Frontend-IDWM-2026-1.git
+   ```
 
-Puedes encontrar el repositorio del backend en el siguiente enlace:
+2. Entrar al directorio del proyecto.
 
+   ```bash
+   cd Ayudantia-Frontend-IDWM-2026-1
+   ```
 
-👉 [Repositorio API Backend](https://github.com/carlos44440/Taller-Backend-IDWM-1erSem-2026)
+3. Instalar dependencias (también activa los hooks de Husky vía `prepare`).
 
+   ```bash
+   npm install
+   ```
 
-## 🚀 Instalación y Ejecución
+4. Crear el archivo `.env` a partir del ejemplo versionado.
 
+   ```bash
+   cp .env.example .env
+   ```
 
-### Clonar el repositorio
+5. Editar `.env` con valores reales (ver [Variables de entorno](#variables-de-entorno)). Si quedan vacíos, el siguiente paso falla.
 
+6. Levantar el servidor de desarrollo en `http://localhost:3000`.
 
-```bash
-git clone https://github.com/xPrismatico/Ayudantia-Frontend-IDWM-2026-1.git
-```
+   ```bash
+   npm run dev
+   ```
 
+## Variables de entorno
 
-### Navega al directorio del proyecto:
+| Variable              | Ámbito | Descripción                                                | Ejemplo dev             |
+| --------------------- | ------ | ---------------------------------------------------------- | ----------------------- |
+| `NEXT_PUBLIC_API_URL` | client | URL base del API (debe ser una URL válida).                | `http://localhost:5000` |
+| `DOMAIN`              | server | Hostname permitido por `next/image` en HTTP (sin esquema). | `localhost`             |
 
+Validadas al iniciar en [`src/env.ts`](src/env.ts) con `@t3-oss/env-nextjs`. Si alguna queda vacía o malformada, `npm run dev` y `npm run build` fallan inmediatamente (fail-fast).
 
-```bash
-cd Ayudantia-Frontend-IDWM-2026-1
-```
+## Scripts
 
+| Comando                | Acción                               |
+| ---------------------- | ------------------------------------ |
+| `npm run dev`          | Servidor de desarrollo (Turbopack).  |
+| `npm run build`        | Build de producción.                 |
+| `npm run start`        | Sirve el build de producción.        |
+| `npm run lint`         | ESLint (flat config).                |
+| `npm run type-check`   | `tsc --noEmit`.                      |
+| `npm run format`       | Prettier sobre todo el repo (write). |
+| `npm run format:check` | Prettier sobre todo el repo (check). |
 
-### Instalación de dependencias
+## Backend y autor
 
-
-```bash
-npm install
-```
-
-
-### Configuración del Entorno
-
-
-Antes de ejecutar el proyecto, asegúrate de configurar correctamente tus variables de entorno:
-
-
-1. Crea un archivo `.env` en la raíz del proyecto.
-2. Copia el contenido del archivo `.env.example` como base en el archivo `.env`.
-3. Completa los campos necesarios:
-
-
-- Ejemplo de URL local donde se ejecuta el backend
-
-
-```bash
-NEXT_PUBLIC_API_URL="http://localhost:5000"
-```
-
-
-- Ejemplo de dominio del backend
-
-
-```bash
-DOMAIN="LOCALHOST=3000"
-```
-
-
-🛠️ Estos valores son esenciales para que la aplicación funcione correctamente en tu entorno local.
-
-
-### Ejecutar el proyecto
-
-
-```bash
-npm run dev
-```
-
-
-Luego, abre tu navegador en:
-
-
-```bash
-http://localhost:3000
-```
-
-
+- Backend del taller: <https://github.com/carlos44440/Taller-Backend-IDWM-1erSem-2026>.
+- Autor: Samuel Fuentes — <samuel.fuentes@alumnos.ucn.cl>.

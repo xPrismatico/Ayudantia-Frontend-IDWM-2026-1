@@ -1,10 +1,12 @@
-import Image from "next/image";
-import HomeView from '../views/home/HomeView';
+import type { Metadata } from "next";
 
-export default function Home() {
-  return (
-    <div className="font-sans items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <HomeView />
-    </div>
-  );
+import HomeView from "@/views/home/home-view";
+
+export const metadata: Metadata = {
+  title: "Inicio - Tienda UCN",
+  description: "Bienvenido a la Tienda UCN. Explora nuestro catálogo.",
+};
+
+export default function HomePage() {
+  return <HomeView />;
 }

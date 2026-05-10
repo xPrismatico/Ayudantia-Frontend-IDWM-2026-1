@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Montserrat, Geist_Mono } from "next/font/google"; 
+import { Geist_Mono, Montserrat } from "next/font/google";
+
 import "./globals.css";
 
-import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/ui/Footer";
-import { Toaster } from 'sonner';
+import { Toaster } from "sonner";
 
-// 2. Configuramos Montserrat
+import { Footer, Navbar } from "@/components/shared";
+
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
@@ -30,12 +30,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${montserrat.variable} ${geistMono.variable} font-sans antialiased flex flex-col min-h-screen bg-slate-50`}
+        className={`${montserrat.variable} ${geistMono.variable} flex min-h-screen flex-col bg-slate-50 font-sans antialiased`}
       >
         <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8">
-          {children}
-        </main>
+        <main className="container mx-auto flex-grow px-4 py-8">{children}</main>
         <Footer />
         <Toaster richColors position="bottom-right" />
       </body>

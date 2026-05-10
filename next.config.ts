@@ -1,21 +1,24 @@
 import type { NextConfig } from "next";
 
+import { env } from "./src/env";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    remotePatterns:[
+    remotePatterns: [
       {
         protocol: "http",
-        hostname: process.env.DOMAIN || "localhost",
+        hostname: env.DOMAIN,
       },
       {
         protocol: "https",
         hostname: "res.cloudinary.com",
       },
-    ]
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+      },
+    ],
   },
 };
-
 
 export default nextConfig;

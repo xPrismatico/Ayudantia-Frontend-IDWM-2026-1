@@ -1,7 +1,9 @@
-"use client"; // Obligatorio para atrapar errores en el cliente
+"use client";
 
+// Obligatorio para atrapar errores en el cliente
 import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
+
+import { Button } from "@/components/ui";
 
 export default function Error({
   error,
