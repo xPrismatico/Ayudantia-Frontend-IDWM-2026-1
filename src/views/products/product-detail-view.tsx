@@ -45,6 +45,7 @@ export default function ProductDetailView({ id }: ProductDetailViewProps) {
   }
 
   const mainImage = product.imagesURL?.[0] || "https://placehold.co/600x400?text=Sin+Imagen";
+  //TODO: PR a Backend indicando cambiar el campo a un bool o int para evitar strings que pueden variar
   const isOutOfStock = product.stockIndicator.toLowerCase() === "sin stock";
 
   return (

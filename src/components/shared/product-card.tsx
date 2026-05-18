@@ -11,7 +11,8 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product.mainImageURL || "https://placehold.co/600x400?text=Producto";
-  const isOutofStock = product.stockIndicator.toLowerCase() === "sin stock";
+  //TODO: PR a Backend indicando cambiar el campo a un bool o int para evitar strings que pueden variar
+  const isOutOfStock = product.stockIndicator.toLowerCase() === "sin stock";
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-md">
       {/* Contenedor de la Imagen */}
@@ -38,7 +39,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
           <span
             className={
-              isOutofStock ? "text-xs font-semibold text-red-600" : "text-xs text-slate-500"
+              isOutOfStock ? "text-xs font-semibold text-red-600" : "text-xs text-slate-500"
             }
           >
             {product.stockIndicator}
@@ -50,7 +51,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="p-4 pt-0">
         <Button
           aria-label={`Agregar ${product.name} al carrito`}
-          disabled={isOutofStock}
+          disabled={isOutOfStock}
           className="w-full bg-blue-600 text-white hover:bg-blue-700"
         >
           <ShoppingCart className="mr-2 h-4 w-4" aria-hidden="true" />

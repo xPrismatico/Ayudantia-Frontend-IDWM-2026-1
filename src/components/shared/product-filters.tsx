@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 // Las constantes que no dependen del componente van por fuera para no recrearse en cada render
+//TODO: PR a backend solicitando endpoint que exponga categorías y marcas para no hardcodear estos filtros rápidos
 const QUICK_FILTERS = ["Notebooks", "Periféricos", "Componentes", "Asus", "Apple", "Monitores"];
 
 interface ProductFiltersProps {
