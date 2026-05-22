@@ -1,9 +1,9 @@
-import { Product } from "@/types/domain";
+import { ProductForCustomer } from "@/types/responses/product";
 
 import ProductCard from "./product-card";
 
 interface ProductGridProps {
-  products: Product[];
+  products: ProductForCustomer[];
 }
 
 export default function ProductGrid({ products }: ProductGridProps) {

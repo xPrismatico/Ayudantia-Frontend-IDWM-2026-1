@@ -6,6 +6,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 
 import { Footer, Navbar } from "@/components/shared";
+import QueryProvider from "@/contexts/query-provider";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -32,10 +33,12 @@ export default function RootLayout({
       <body
         className={`${montserrat.variable} ${geistMono.variable} flex min-h-screen flex-col bg-slate-50 font-sans antialiased`}
       >
-        <Navbar />
-        <main className="container mx-auto flex-grow px-4 py-8">{children}</main>
-        <Footer />
-        <Toaster richColors position="bottom-right" />
+        <QueryProvider>
+          <Navbar />
+          <main className="container mx-auto flex-grow px-4 py-8">{children}</main>
+          <Footer />
+          <Toaster richColors position="bottom-right" />
+        </QueryProvider>
       </body>
     </html>
   );
