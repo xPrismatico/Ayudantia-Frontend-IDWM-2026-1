@@ -56,10 +56,12 @@ Cliente web del taller de Introducción al Desarrollo Web/Móvil (UCN). Construi
 
 ## Variables de entorno
 
-| Variable              | Ámbito | Descripción                                                | Ejemplo dev             |
-| --------------------- | ------ | ---------------------------------------------------------- | ----------------------- |
-| `NEXT_PUBLIC_API_URL` | client | URL base del API (debe ser una URL válida).                | `http://localhost:5000` |
-| `DOMAIN`              | server | Hostname permitido por `next/image` en HTTP (sin esquema). | `localhost`             |
+| Variable              | Ámbito | Descripción                                                | Ejemplo dev               |
+| --------------------- | ------ | ---------------------------------------------------------- | ------------------------- |
+| `NEXT_PUBLIC_API_URL` | client | URL base del API (debe ser una URL válida).                | `http://localhost:5254`   |
+| `DOMAIN`              | server | Hostname permitido por `next/image` en HTTP (sin esquema). | `localhost`               |
+| `NEXTAUTH_URL`        | server | URL del sitio para NextAuth.                               | `http://localhost:3000`   |
+| `NEXTAUTH_SECRET`     | server | Secreto de NextAuth.                                       | `openssl rand -base64 32` |
 
 Validadas al iniciar en [`src/env.ts`](src/env.ts) con `@t3-oss/env-nextjs`. Si alguna queda vacía o malformada, `npm run dev` y `npm run build` fallan inmediatamente (fail-fast).
 

@@ -3,6 +3,6 @@ export interface ProductForCustomer {
   name: string;
   description: string;
   mainImageURL: string | null;
-  price: string;
-  stockIndicator: string;
+  price: number;
+  inStock: boolean;
 }

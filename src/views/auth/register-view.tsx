@@ -84,7 +84,8 @@ export default function RegisterView() {
         });
         toast.error("Por favor, corrige los errores en el formulario.");
       } else if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Ocurrió un error en el registro.");
+        const data = error.response?.data;
+        toast.error(data?.details ?? data?.message ?? "Ocurrió un error en el registro.");
       } else {
         toast.error("Ocurrió un error inesperado.");
       }
