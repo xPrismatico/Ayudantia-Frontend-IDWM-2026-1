@@ -39,9 +39,9 @@ export default function ProductsView() {
   }, [debouncedSearchTerm]);
 
   const { data, isLoading, isError } = useProducts({
-    PageNumber: page,
-    PageSize: pageSize,
-    SearchTerm: debouncedSearchTerm || undefined,
+    pageNumber: page,
+    pageSize: pageSize,
+    searchTerm: debouncedSearchTerm || undefined,
   });
 
   return (

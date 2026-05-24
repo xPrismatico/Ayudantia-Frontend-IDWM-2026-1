@@ -1,5 +1,5 @@
 export interface SearchParamsDTO {
-  PageNumber: number;
-  PageSize: number;
-  SearchTerm?: string;
+  pageNumber: number;
+  pageSize: number;
+  searchTerm?: string;
 }
