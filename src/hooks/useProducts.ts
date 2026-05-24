@@ -5,7 +5,7 @@ import { productService } from "@/services/product-service";
 
 export function useProducts(params: SearchParamsDTO) {
   return useQuery({
-    queryKey: ["products", params.PageNumber, params.PageSize, params.SearchTerm],
+    queryKey: ["products", params.pageNumber, params.pageSize, params.searchTerm],
     queryFn: () => productService.getProductsForCustomer(params),
     placeholderData: (previousData) => previousData,
   });

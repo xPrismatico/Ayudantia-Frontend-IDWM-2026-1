@@ -1,3 +1,3 @@
 export interface ResendCodeRequest {
-  Email: string;
+  email: string;
 }

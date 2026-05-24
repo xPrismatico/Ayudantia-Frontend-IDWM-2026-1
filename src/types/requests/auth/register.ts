@@ -1,10 +1,10 @@
 export interface RegisterRequest {
-  Name: string;
-  Email: string;
-  Rut: string;
-  PhoneNumber: string;
-  BirthDate: string; // (YYYY-MM-DD)
-  Gender: string;
-  Password: string;
-  ConfirmPassword: string;
+  name: string;
+  email: string;
+  rut: string;
+  phoneNumber: string;
+  birthDate: string; // (YYYY-MM-DD)
+  gender: string;
+  password: string;
+  confirmPassword: string;
 }

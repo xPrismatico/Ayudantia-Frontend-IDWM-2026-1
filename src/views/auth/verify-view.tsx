@@ -37,8 +37,8 @@ export default function VerifyView() {
     try {
       setIsLoading(true);
       await authService.verifyEmail({
-        Email: email,
-        VerificationCode: data.code,
+        email: email,
+        verificationCode: data.code,
       });
 
       toast.success("¡Cuenta verificada exitosamente!");
@@ -59,7 +59,7 @@ export default function VerifyView() {
     if (!email) return;
     try {
       setIsResending(true);
-      const message = await authService.resendVerificationCode({ Email: email });
+      const message = await authService.resendVerificationCode({ email: email });
       toast.info(message || "Código reenviado.");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {

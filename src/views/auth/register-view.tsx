@@ -51,14 +51,14 @@ export default function RegisterView() {
       setIsLoading(true);
 
       const requestData = {
-        Name: data.name,
-        Email: data.email,
-        Rut: data.rut,
-        PhoneNumber: data.phoneNumber,
-        BirthDate: data.birthDate,
-        Gender: data.gender,
-        Password: data.password,
-        ConfirmPassword: data.confirmPassword,
+        name: data.name,
+        email: data.email,
+        rut: data.rut,
+        phoneNumber: data.phoneNumber,
+        birthDate: data.birthDate,
+        gender: data.gender,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
       };
 
       await authService.register(requestData);

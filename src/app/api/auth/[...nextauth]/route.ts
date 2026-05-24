@@ -19,8 +19,8 @@ export const authOptions: NextAuthOptions = {
 
         try {
           const token = await authService.login({
-            Email: credentials.email,
-            Password: credentials.password,
+            email: credentials.email,
+            password: credentials.password,
           });
 
           if (token) {

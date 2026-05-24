@@ -1,4 +1,4 @@
 export interface VerifyEmailRequest {
-  Email: string;
-  VerificationCode: string;
+  email: string;
+  verificationCode: string;
 }

@@ -27,8 +27,8 @@ export const productService = {
           products: [],
           totalCount: 0,
           totalPages: 0,
-          currentPage: params.PageNumber,
-          pageSize: params.PageSize,
+          currentPage: params.pageNumber,
+          pageSize: params.pageSize,
           productsInPage: 0,
         };
       }
