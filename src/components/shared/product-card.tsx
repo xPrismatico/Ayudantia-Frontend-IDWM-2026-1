@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { ProductForCustomer } from "@/types/responses/product";
+import { formatPriceCLP } from "@/lib/currency";
 import { Button, Card, CardContent, CardFooter } from "@/components/ui";
 
 interface ProductCardProps {
@@ -11,8 +12,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product.mainImageURL || "https://placehold.co/600x400?text=Producto";
-  //TODO: PR a Backend indicando cambiar el campo a un bool o int para evitar strings que pueden variar
-  const isOutOfStock = product.stockIndicator.toLowerCase() === "sin stock";
+  const isOutOfStock = !product.inStock;
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-md">
       {/* Contenedor de la Imagen */}
@@ -34,15 +34,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="mt-2 line-clamp-2 text-sm text-slate-500">{product.description}</p>
 
         <div className="mt-4 flex items-center justify-between">
-          {/* El precio ya es un string formateado por la API (Ej: "$900.000"), lo imprimimos directo */}
-          <span className="text-xl font-bold text-slate-900">{product.price}</span>
+          <span className="text-xl font-bold text-slate-900">{formatPriceCLP(product.price)}</span>
 
           <span
             className={
               isOutOfStock ? "text-xs font-semibold text-red-600" : "text-xs text-slate-500"
             }
           >
-            {product.stockIndicator}
+            {isOutOfStock ? "Sin stock" : "En stock"}
           </span>
         </div>
       </CardContent>

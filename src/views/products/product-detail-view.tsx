@@ -4,6 +4,7 @@ import { ArrowLeft, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { formatPriceCLP } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import { useProductDetail } from "@/hooks/useProductDetail";
 
@@ -45,8 +46,7 @@ export default function ProductDetailView({ id }: ProductDetailViewProps) {
   }
 
   const mainImage = product.imagesURL?.[0] || "https://placehold.co/600x400?text=Sin+Imagen";
-  //TODO: PR a Backend indicando cambiar el campo a un bool o int para evitar strings que pueden variar
-  const isOutOfStock = product.stockIndicator.toLowerCase() === "sin stock";
+  const isOutOfStock = !product.inStock;
 
   return (
     <div className="space-y-6">
@@ -89,9 +89,8 @@ export default function ProductDetailView({ id }: ProductDetailViewProps) {
 
             <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
 
-            {/* Visualización del precio procesado por el backend */}
             <div className="border-b border-slate-100 py-2 text-3xl font-extrabold text-slate-900">
-              {product.price}
+              {formatPriceCLP(product.price)}
             </div>
 
             {/* Ficha descriptiva */}
@@ -120,7 +119,7 @@ export default function ProductDetailView({ id }: ProductDetailViewProps) {
                   <p
                     className={`text-sm font-bold ${isOutOfStock ? "text-red-600" : "text-emerald-700"}`}
                   >
-                    {product.stockIndicator}
+                    {isOutOfStock ? "Sin stock" : "En stock"}
                   </p>
                 </div>
               </div>
