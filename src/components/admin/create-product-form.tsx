@@ -19,11 +19,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useCreateProduct } from "@/hooks/useAdminProducts";
+import { useCatalogFilters } from "@/hooks/useCatalogFilters";
 
 export function CreateProductForm() {
   const router = useRouter();
   const { mutateAsync: createProduct, isPending } = useCreateProduct();
+  const { categories, brands, isLoading: isCatalogLoading } = useCatalogFilters();
 
   const form = useForm<CreateProductFormValues>({
     resolver: zodResolver(createProductSchema),
@@ -46,7 +55,18 @@ export function CreateProductForm() {
     } catch (error: unknown) {
       // Verificamos si el error es de Axios para poder leer error.response de forma segura
       if (axios.isAxiosError(error)) {
-        toast.error(error.response?.data?.message || "Ocurrió un error al crear el producto.");
+        // intentamos leer un msg directo (GenericResponse)
+        let errorMessage = error.response?.data?.message;
+        // si no existe, buscamos si es un error de validacion de .NET (ProblemDetails)
+        const validationErrors = error.response?.data?.errors;
+
+        if (validationErrors) {
+          // Extraemos el primer error de validacion que encuentre
+          const firstKey = Object.keys(validationErrors)[0];
+          errorMessage = validationErrors[firstKey][0];
+        }
+
+        toast.error(errorMessage || "Ocurrió un error al crear el producto.");
       } else {
         toast.error("Ocurrió un error inesperado al crear el producto.");
       }
@@ -58,6 +78,7 @@ export function CreateProductForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Campo Nombre del Producto */}
             <FormField
               control={form.control}
               name="name"
@@ -72,6 +93,7 @@ export function CreateProductForm() {
               )}
             />
 
+            {/* Campo Precio */}
             <FormField
               control={form.control}
               name="price"
@@ -91,6 +113,7 @@ export function CreateProductForm() {
               )}
             />
 
+            {/* Campo Stock */}
             <FormField
               control={form.control}
               name="stock"
@@ -110,29 +133,73 @@ export function CreateProductForm() {
               )}
             />
 
+            {/* Selector de Categoría */}
             <FormField
               control={form.control}
               name="categoryName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoría</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ej. Notebooks" {...field} />
-                  </FormControl>
+
+                  {/* Selector de Categoría segun el catálogo */}
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isCatalogLoading}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={
+                            isCatalogLoading ? "Cargando..." : "Selecciona una categoría"
+                          }
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {categories?.map((category) => (
+                        <SelectItem key={category.id} value={category.name}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            {/* Selector de Marca */}
             <FormField
               control={form.control}
               name="brandName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marca</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ej. Asus" {...field} />
-                  </FormControl>
+
+                  {/* Selector de Marca segun el catálogo */}
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isCatalogLoading}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder={isCatalogLoading ? "Cargando..." : "Selecciona una marca"}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {brands?.map((brand) => (
+                        <SelectItem key={brand.id} value={brand.name}>
+                          {brand.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -162,7 +229,17 @@ export function CreateProductForm() {
                 <FormLabel>Imágenes del Producto</FormLabel>
                 <FormControl>
                   <div className="flex w-full items-center justify-center">
-                    <label className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100">
+                    <label
+                      className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 hover:bg-slate-100"
+                      onDragOver={(e) => e.preventDefault()} // Impide que navegador abra la imagen
+                      onDrop={(e) => {
+                        e.preventDefault(); // Evita el comportamiento por defecto
+                        const files = e.dataTransfer.files; // Captura los archivos soltados
+                        if (files && files.length > 0) {
+                          onChange(Array.from(files)); // Se inyectan a React Hook Form
+                        }
+                      }}
+                    >
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <UploadCloud className="mb-2 h-8 w-8 text-slate-500" />
                         <p className="mb-1 text-sm text-slate-500">

@@ -43,6 +43,15 @@ export default function Navbar() {
               <Link href="/login">Ingresar</Link>
             </Button>
           )}
+
+          {/*TO DO: Visualizacion condicional para administradores en Ayudantia 5*/}
+          <Button
+            asChild
+            variant="secondary"
+            className="border-none bg-blue-500 text-white hover:bg-blue-700 hover:text-white"
+          >
+            <Link href="/admin/products">Administracion</Link>
+          </Button>
         </nav>
       </div>
     </header>

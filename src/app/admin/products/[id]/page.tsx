@@ -1,4 +1,3 @@
-// src/app/admin/products/[id]/page.tsx
 import AdminProductDetailView from "@/views/admin/products/admin-product-detail-view";
 
 interface Props {

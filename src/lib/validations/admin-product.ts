@@ -14,12 +14,12 @@ export const createProductSchema = z.object({
   price: z
     .number()
     .int({ message: "El precio debe ser un número entero." })
-    .positive({ message: "El precio debe ser mayor a cero." }),
+    .min(0, { message: "El precio no puede ser negativo." }),
 
   stock: z
     .number()
     .int({ message: "El stock debe ser un número entero." })
-    .positive({ message: "El stock debe ser mayor a cero." }),
+    .min(0, { message: "El stock no puede ser negativo." }),
   categoryName: z
     .string()
     .min(3, { message: "El nombre de la categoría debe tener al menos 3 caracteres." })
