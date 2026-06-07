@@ -2,8 +2,8 @@ export interface ProductDetailCustomer {
   id: number;
   name: string;
   description: string | null;
-  price: string; // Ya formateado desde el backend (Ej: "$1.200.000")
-  stockIndicator: string; // Ej: "Con Stock" o "Sin stock"
+  price: number;
+  inStock: boolean;
   brandName: string;
   brandDescription: string;
   categoryName: string;
