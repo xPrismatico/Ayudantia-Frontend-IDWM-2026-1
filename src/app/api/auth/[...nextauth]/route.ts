@@ -1,8 +1,14 @@
 import axios from "axios";
+import { jwtDecode, JwtPayload } from "jwt-decode";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { authService } from "@/services/auth-service";
+
+interface DotNetJwtPayload extends JwtPayload {
+  role?: string;
+  "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"?: string;
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -40,14 +46,26 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
+      if (user && user.accessToken) {
         token.accessToken = user.accessToken;
+        try {
+          const decoded = jwtDecode<DotNetJwtPayload>(user.accessToken);
+
+          const roleClaim =
+            decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || decoded.role;
+          token.role = roleClaim;
+        } catch (error) {
+          console.error("Error al decodificar el token JWT:", error);
+        }
       }
       return token;
     },
 
     async session({ session, token }) {
       session.accessToken = token.accessToken as string;
+      if (session.user) {
+        session.user.role = token.role as string;
+      }
       return session;
     },
   },
