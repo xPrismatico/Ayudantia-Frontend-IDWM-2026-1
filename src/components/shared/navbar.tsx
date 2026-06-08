@@ -10,6 +10,8 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" && !!session?.accessToken;
 
+  const isAdmin = isAuthenticated && session?.user?.role === "Admin";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-blue-600 shadow-sm">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
@@ -31,6 +33,17 @@ export default function Navbar() {
             <Link href="/products">Catálogo</Link>
           </Button>
 
+          {/*Visualización condicional para Administradores */}
+          {isAdmin && (
+            <Button
+              asChild
+              variant="secondary"
+              className="border-none bg-blue-500 text-white hover:bg-blue-700 hover:text-white"
+            >
+              <Link href="/admin/products">Administracion</Link>
+            </Button>
+          )}
+
           {/* Renderizado Condicional basado en el estado de autenticación */}
           {isAuthenticated ? (
             <LogoutButton token={session.accessToken!} />
@@ -43,15 +56,6 @@ export default function Navbar() {
               <Link href="/login">Ingresar</Link>
             </Button>
           )}
-
-          {/*TO DO: Visualizacion condicional para administradores en Ayudantia 5*/}
-          <Button
-            asChild
-            variant="secondary"
-            className="border-none bg-blue-500 text-white hover:bg-blue-700 hover:text-white"
-          >
-            <Link href="/admin/products">Administracion</Link>
-          </Button>
         </nav>
       </div>
     </header>
