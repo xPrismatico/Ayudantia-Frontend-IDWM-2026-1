@@ -1,10 +1,14 @@
-import { ShoppingCart } from "lucide-react";
+"use client";
+
+import { Loader2, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { ProductForCustomer } from "@/types/responses/product";
 import { formatPriceCLP } from "@/lib/currency";
 import { Button, Card, CardContent, CardFooter } from "@/components/ui";
+import { useCart } from "@/hooks/useCart";
 
 interface ProductCardProps {
   product: ProductForCustomer;
@@ -13,6 +17,22 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const imageUrl = product.mainImageURL || "https://placehold.co/600x400?text=Producto";
   const isOutOfStock = !product.inStock;
+
+  const { addCartItem } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+
+  // Manejador del evento de agregar al carrito
+  const handleAddToCart = async () => {
+    try {
+      setIsAdding(true);
+      await addCartItem({ productId: product.id, quantity: 1 });
+    } catch (error) {
+      console.error("Error al agregar producto al carrito:", error);
+    } finally {
+      setIsAdding(false); // Detenemos el spinner independientemente de si funcionó o falló
+    }
+  };
+
   return (
     <Card className="flex flex-col overflow-hidden transition-all hover:shadow-md">
       {/* Contenedor de la Imagen */}
@@ -49,12 +69,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Pie de la Tarjeta con el Botón */}
       <CardFooter className="p-4 pt-0">
         <Button
+          onClick={handleAddToCart}
+          disabled={isOutOfStock || isAdding}
           aria-label={`Agregar ${product.name} al carrito`}
-          disabled={isOutOfStock}
-          className="w-full bg-blue-600 text-white hover:bg-blue-700"
+          className="w-full bg-blue-600 text-white transition-all hover:bg-blue-700 disabled:opacity-70"
         >
-          <ShoppingCart className="mr-2 h-4 w-4" aria-hidden="true" />
-          Agregar
+          {/* Alternancia visual del icono dependiendo del estado */}
+          {isAdding ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+          ) : (
+            <ShoppingCart className="mr-2 h-4 w-4" aria-hidden="true" />
+          )}
+          {isAdding ? "Agregando..." : "Agregar"}
         </Button>
       </CardFooter>
     </Card>
