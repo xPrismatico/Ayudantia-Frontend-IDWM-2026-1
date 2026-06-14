@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import LogoutButton from "@/components/shared/logout-button";
 
+import { CartWidget } from "./cart-widget";
+
 export default function Navbar() {
   const { data: session, status } = useSession();
   const isAuthenticated = status === "authenticated" && !!session?.accessToken;
@@ -56,6 +58,9 @@ export default function Navbar() {
               <Link href="/login">Ingresar</Link>
             </Button>
           )}
+
+          {/* Componente Widget del Carrito (si el usuario está autenticado) */}
+          <CartWidget />
         </nav>
       </div>
     </header>

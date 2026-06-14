@@ -1,11 +1,13 @@
 "use client";
 
-import { ArrowLeft, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
+import { ArrowLeft, Loader2, ShieldCheck, ShoppingCart, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import { formatPriceCLP } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 import { useProductDetail } from "@/hooks/useProductDetail";
 
 interface ProductDetailViewProps {
@@ -14,6 +16,20 @@ interface ProductDetailViewProps {
 
 export default function ProductDetailView({ id }: ProductDetailViewProps) {
   const { data: product, isLoading, isError } = useProductDetail(id);
+  const { addCartItem } = useCart();
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddToCart = async () => {
+    if (!product) return;
+    try {
+      setIsAdding(true);
+      await addCartItem({ productId: product.id, quantity: 1 });
+    } catch (error) {
+      console.error("Error al agregar al carrito:", error);
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   // 1. Estado de Carga Dedicado para la Ficha Técnica (Skeleton)
   if (isLoading) {
@@ -129,11 +145,21 @@ export default function ProductDetailView({ id }: ProductDetailViewProps) {
           {/* Botón de Transacción Comercial */}
           <div className="pt-8">
             <Button
-              className="flex h-12 w-full items-center justify-center gap-2 bg-blue-600 text-base font-bold text-white shadow-sm transition-all hover:bg-blue-700"
-              disabled={isOutOfStock}
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || isAdding}
+              className="flex h-12 w-full items-center justify-center gap-2 bg-blue-600 text-base font-bold text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-70"
             >
-              <ShoppingCart className="h-5 w-5" />
-              {isOutOfStock ? "Producto Agotado" : "Agregar al Carrito de Compras"}
+              {isAdding ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <ShoppingCart className="h-5 w-5" />
+              )}
+
+              {isOutOfStock
+                ? "Producto Agotado"
+                : isAdding
+                  ? "Agregando..."
+                  : "Agregar al Carrito de Compras"}
             </Button>
           </div>
         </div>
