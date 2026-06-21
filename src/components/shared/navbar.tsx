@@ -46,6 +46,17 @@ export default function Navbar() {
             </Button>
           )}
 
+          {/* Visualización para Clientes (Customer) */}
+          {isAuthenticated && session?.user?.role === "Customer" && (
+            <Button
+              asChild
+              variant="secondary"
+              className="border-none bg-blue-500 text-white hover:bg-blue-700 hover:text-white"
+            >
+              <Link href="/orders">Mis Compras</Link>
+            </Button>
+          )}
+
           {/* Renderizado Condicional basado en el estado de autenticación */}
           {isAuthenticated ? (
             <LogoutButton token={session.accessToken!} />
