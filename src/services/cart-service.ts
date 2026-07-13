@@ -1,4 +1,4 @@
-import { AddChangeCartItemDTO, CartDTO } from "@/types/responses/cart";
+import { AddChangeCartItemDTO, CartDTO, CheckoutResultDTO } from "@/types/responses/cart";
 import { GenericResponse } from "@/types/responses/generic-response";
 import { apiClient } from "@/clients/axios";
 
@@ -27,6 +27,10 @@ export const cartService = {
 
   clearCart: async (): Promise<CartDTO> => {
     const response = await apiClient.put<GenericResponse<CartDTO>>("/api/cart/clear");
+    return response.data.data;
+  },
+  checkoutCart: async (): Promise<CheckoutResultDTO> => {
+    const response = await apiClient.post<GenericResponse<CheckoutResultDTO>>("/api/cart/checkout");
     return response.data.data;
   },
 };

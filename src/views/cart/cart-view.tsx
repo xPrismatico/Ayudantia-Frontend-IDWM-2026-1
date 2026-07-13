@@ -1,16 +1,43 @@
 "use client";
 
-import { ArrowRight, ShoppingCart, Trash2 } from "lucide-react";
+import { ArrowRight, Loader2, ShoppingCart, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { CartItemCard } from "@/components/shared/cart-item-card";
 import { useCart } from "@/hooks/useCart";
 
 export function CartView() {
-  const { cart, isLoading, clearCart, isMutating } = useCart();
+  const router = useRouter();
+  const { cart, isLoading, clearCart, checkoutCart, isMutating } = useCart();
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP" }).format(price);
+
+  // Manejar el proceso de checkout con validación de stock
+  const handleCheckout = async () => {
+    try {
+      const result = await checkoutCart();
+
+      const { updatedItemsNames, removedItemsNames } = result.cartUpdatesDTO;
+
+      // Si el backend modificó el carrito por falta de stock, avisamos y detenemos la redirección
+      if (updatedItemsNames.length > 0 || removedItemsNames.length > 0) {
+        toast.warning(
+          "Algunos productos en tu carrito fueron modificados o eliminados debido a cambios en nuestro stock. Por favor, revisa tu carrito nuevamente.",
+          { duration: 6000 }
+        );
+        return; // Detenemos el flujo aquí
+      }
+
+      // Si el carrito está intacto, avanzamos a la pantalla de pago final
+      router.push("/checkout");
+    } catch (error) {
+      // El error ya es manejado por handleMutationError en useCart
+      console.error("Fallo al validar el checkout", error);
+    }
+  };
 
   // 1. Estado de Carga
   if (isLoading) {
@@ -88,6 +115,7 @@ export function CartView() {
                 </span>
                 <span className="font-medium text-gray-900">{formatPrice(cart.totalPrice)}</span>
               </div>
+
               <div className="flex justify-between">
                 <span>Costo de envío</span>
                 <span className="font-medium text-green-600">Por calcular</span>
@@ -101,13 +129,23 @@ export function CartView() {
               </span>
             </div>
 
-            {/* Este botón lo conectaremos en la Ayudantía 7 para el Checkout */}
+            {/* Botón Checkout */}
             <button
-              className="flex w-full cursor-not-allowed items-center justify-center rounded-md bg-blue-600 px-4 py-3 font-medium text-white opacity-80 transition-colors hover:bg-blue-700"
-              title="Disponible en la Ayudantía 7"
+              onClick={handleCheckout}
+              disabled={isMutating}
+              className="flex w-full items-center justify-center rounded-md bg-blue-600 px-4 py-3 font-medium text-white transition-colors hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              Proceder al Checkout
-              <ArrowRight size={18} className="ml-2" />
+              {isMutating ? (
+                <>
+                  <Loader2 className="mr-2 animate-spin" size={18} />
+                  Validando stock...
+                </>
+              ) : (
+                <>
+                  Proceder al Checkout
+                  <ArrowRight size={18} className="ml-2" />
+                </>
+              )}
             </button>
           </div>
         </div>

@@ -34,8 +34,9 @@ export async function middleware(req: NextRequest) {
   }
 
   // 4. AUTORIZACIÓN POR ROL: CLIENTE/COMPRADOR
-  // Exigimos que el rol sea Customer para acceder a /checkout o /cart
-  const isCustomerRoute = path.startsWith("/checkout") || path.startsWith("/cart");
+  // Exigimos que el rol sea Customer para acceder a /checkout, /cart o /orders
+  const isCustomerRoute =
+    path.startsWith("/checkout") || path.startsWith("/cart") || path.startsWith("/orders");
   if (isCustomerRoute && token?.role !== "Customer") {
     return NextResponse.redirect(new URL("/unauthorized", req.url));
   }
@@ -45,5 +46,13 @@ export async function middleware(req: NextRequest) {
 
 // El matcher define qué rutas pasan por este filtro (optimización de rendimiento)
 export const config = {
-  matcher: ["/admin/:path*", "/checkout/:path*", "/cart/:path*", "/login", "/register", "/verify"],
+  matcher: [
+    "/admin/:path*",
+    "/checkout/:path*",
+    "/cart/:path*",
+    "/orders/:path*",
+    "/login",
+    "/register",
+    "/verify",
+  ],
 };

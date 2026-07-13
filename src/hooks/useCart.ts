@@ -87,6 +87,17 @@ export function useCart() {
     onError: (error) => handleMutationError(error, "Error al vaciar el carrito"),
   });
 
+  // 6. Mutación para validar el carrito antes de pagar (Checkout)
+  const checkoutMutation = useMutation({
+    mutationFn: () => cartService.checkoutCart(),
+    onSuccess: (result) => {
+      // Actualizamos el carrito con la respuesta del backend (por si hubo recálculos de stock)
+      setCart(result.cartUpdated);
+      queryClient.setQueryData(["cart"], result.cartUpdated);
+    },
+    onError: (error) => handleMutationError(error, "Error al procesar el checkout"),
+  });
+
   return {
     cart: query.data,
     isLoading: query.isLoading,
@@ -94,10 +105,12 @@ export function useCart() {
     updateQuantity: updateQuantityMutation.mutateAsync,
     removeCartItem: removeMutation.mutateAsync,
     clearCart: clearMutation.mutateAsync,
+    checkoutCart: checkoutMutation.mutateAsync, // <-- Nueva exportación
     isMutating:
       addMutation.isPending ||
       updateQuantityMutation.isPending ||
       removeMutation.isPending ||
-      clearMutation.isPending,
+      clearMutation.isPending ||
+      checkoutMutation.isPending, // <-- Agregado al estado de carga
   };
 }
